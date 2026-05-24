@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Documentation | Harmonizer Pro AI</title>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0b0e; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-300 min-h-screen pb-20">
+
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/5 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 pt-12">
+        <div class="flex items-center justify-between mb-16">
+            <a href="/" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span class="text-sm font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">Back to Studio</span>
+            </a>
+            <h1 class="text-xl font-black tracking-tighter text-white">SYSTEM<span class="text-indigo-400">DOCS</span></h1>
+        </div>
+
+        <section class="mb-20">
+            <h2 class="text-5xl font-extrabold mb-6 gradient-text">Technical Methodology</h2>
+            <p class="text-lg text-slate-400 leading-relaxed">
+                Harmonizer Pro utilizes a hybrid approach of traditional computer vision and neural semantic segmentation to achieve realistic style transfer across batch datasets.
+            </p>
+        </section>
+
+        <div class="space-y-12">
+            
+            <div class="glass-panel rounded-[2rem] p-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">01. MVC Architecture</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed mb-4">
+                    The system is built on the **Model-View-Controller (MVC)** design pattern:
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-slate-400 ml-4">
+                    <li><strong>Model:</strong> SQLite database managing <code class="text-indigo-300">Project</code> and <code class="text-indigo-300">ResultImage</code> entities.</li>
+                    <li><strong>View:</strong> Responsive Jinja2 templates styled with Tailwind CSS.</li>
+                    <li><strong>Controller:</strong> Flask application handling routing and orchestration of the processing engine.</li>
+                </ul>
+            </div>
+
+            <div class="glass-panel rounded-[2rem] p-10 border-indigo-500/20">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">02. Smart Mode (U²-Net)</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed mb-6">
+                    To prevent skin tone distortion and "filter burn," Smart Mode employs the **U²-Net** model for semantic subject segmentation. 
+                </p>
+                <div class="bg-black/40 rounded-2xl p-6 border border-white/5 font-mono text-sm text-indigo-300">
+                    // Logic Flow<br>
+                    1. Detect foreground mask via rembg (U²-Net)<br>
+                    2. Generate Gaussian-blurred alpha channel<br>
+                    3. Apply Histogram Matching to background only<br>
+                    4. Re-composite original subject onto harmonized background
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-[2rem] p-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">03. Histogram Matching</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed">
+                    The core stylization is achieved through <strong>Multi-channel Histogram Matching</strong>. The system extracts the cumulative distribution function (CDF) of the reference style and remaps the source pixel intensities to align with the target atmosphere.
+                </p>
+            </div>
+
+        </div>
+
+        <footer class="mt-20 pt-10 border-t border-white/5 text-center text-slate-600 text-sm">
+            &copy; 2026 Harmonizer Pro AI Studio. Final Year Project Submission.
+        </footer>
+    </div>
+</body>
+</html>

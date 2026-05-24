@@ -1,0 +1,579 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Harmonizer Pro</title>
+</head>
+<body class="bg-state-50 text-state-800 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
+        <div class="bg-indigo-600 p-8 text-center text-white">
+            <h1 class="text-3xl font-bold mb-2">✨ Harmonizer Pro</h1>
+            <p class="opacity-90">Upload a source image and multiple target styles to begin.</p>
+            
+            <form action="/upload" method="post" enctype="multipart/form-data" class="p-8 space-y-6" id="upload-form">
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">1. Select Source Images (To be Harmonized):</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-indigo-200 border-dashed rounded-lg cursor-pointer bg-indigo-50 hover:bg-indigo-100 transition">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <p class="mb-2 text-sm text-indigo-500"><span class="font-semibold">Click to upload</span>multiple photos</p>
+                            </div>
+                            <input type="file" name="sources" class="hidden" multiple required />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">2. Select Target Styles (The Theme):</label>
+                    <input type="file" name="target" class="block w-full text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-indigo-50 file:text-indigo-700
+                        hover:file:bg-indigo-100" required />
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border">
+                    <div class="flex items-center">
+                        <input id="smart-toggle" type="checkbox" name="smart_mode" value="true" checked class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="smart-toggle" class="ml-3 text-sm font-medium text-gray-900">
+                            Enable Smart Mode (AI)
+                            <span class="block text-xs text-gray-500">Preserves skin tones & protects people from filters.</span>
+                        </label>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Recommended</span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700">Smart Mode (Object Protection)</span>
+                        <span class="text-xs text-slate-500 text-left">Uses U²-Net AI to detect and preserve the main subject.</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="smart_mode" value="true" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-lg px-5 py-3 text-center transition-all shadow-lg hover:shadow-indigo-500/30">
+                Start Batch Harmonization 🚀
+                </button>
+            </form>
+        </div>
+
+        <div id="loader" class="fixed inset-0 bg-white/90 z-50 hidden flex-col items-center justify-center backdrop-blur-sm">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600"></div>
+            <p class="mt-4 text-xl font-semibold text-indigo-700 animate-pulse">AI is working its magic...</p>
+        </div>
+
+        <script>
+            document.getElementById('uploadForm').addEventListener('submit', function() {
+                document.getElementById('loader').classList.remove('hidden');
+                document.getElementById('loader').classList.add('flex');
+            });
+        </script>
+
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Harmonizer Pro | AI Studio</title>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .step-inactive { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+    </style>
+</head>
+<body class="bg-[#0f1115] text-slate-200 min-h-screen flex items-center justify-center p-6">
+    
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-900/20 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/20 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="w-full max-w-4xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mb-3">
+                ✨ Harmonizer <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Pro</span>
+            </h1>
+            <p class="text-slate-400 text-lg">Professional AI Image Style Harmonization</p>
+        </header>
+
+        <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form" class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="glass rounded-3xl p-8 transition-all hover:border-indigo-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-sm font-bold">1</span>
+                        <h2 class="text-xl font-bold text-white">Source Images</h2>
+                    </div>
+                    <label class="group relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-700 rounded-2xl cursor-pointer hover:bg-white/5 hover:border-indigo-500 transition-all">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
+                            <svg class="w-10 h-10 mb-3 text-slate-500 group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <p class="text-sm text-slate-400"><span class="font-bold text-indigo-400">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-slate-500 mt-2">Multiple JPG, PNG or WEBP</p>
+                        </div>
+                        <input type="file" name="sources" class="hidden" multiple required />
+                    </label>
+                </div>
+
+                <div class="glass rounded-3xl p-8 transition-all hover:border-purple-500/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-sm font-bold">2</span>
+                        <h2 class="text-xl font-bold text-white">Target Style</h2>
+                    </div>
+                    <label class="group relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-700 rounded-2xl cursor-pointer hover:bg-white/5 hover:border-purple-500 transition-all">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
+                            <svg class="w-10 h-10 mb-3 text-slate-500 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                            <p class="text-sm text-slate-400"><span class="font-bold text-purple-400">Select Style Theme</span></p>
+                            <p class="text-xs text-slate-500 mt-2">Single image defines the aesthetic</p>
+                        </div>
+                        <input type="file" name="target" class="hidden" required />
+                    </label>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-lg font-bold text-white leading-none">Smart Mode Optimization</h3>
+                            <span class="bg-indigo-500/20 text-indigo-300 text-[10px] uppercase font-black px-2 py-1 rounded-md border border-indigo-500/30">AI Powered</span>
+                        </div>
+                        <p class="text-sm text-slate-400">Uses U²-Net AI to detect subjects and protect skin tones from heavy filters.</p>
+                    </div>
+                    
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="smart_mode" value="true" class="sr-only peer" checked>
+                        <div class="w-14 h-7 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full group relative flex items-center justify-center px-8 py-5 font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl transition-all hover:scale-[1.01] hover:shadow-[0_0_40px_-10px_rgba(79,70,229,0.5)] active:scale-95">
+                <span class="text-xl">Start Batch Harmonization</span>
+                <svg class="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <div id="loader" class="fixed inset-0 bg-[#0f1115]/95 z-50 hidden flex-col items-center justify-center backdrop-blur-xl">
+        <div class="relative w-24 h-24">
+            <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <h2 class="mt-8 text-2xl font-bold text-white animate-pulse tracking-wide">AI Processing...</h2>
+        <p class="text-slate-500 mt-2">Matching histograms and preserving subjects</p>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('loader').classList.add('flex');
+        });
+    </script>
+
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Harmonizer Pro | AI Stylization Studio</title>
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #0a0b0e;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-300 min-h-screen selection:bg-indigo-500/30">
+
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <header class="flex justify-between items-center mb-16">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 step-number rounded-xl flex items-center justify-center">
+                    <span class="text-white font-black text-xl">H</span>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tighter text-white">HARMONIZER<span class="text-indigo-400">PRO</span></h1>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-slate-500">
+                <a href="/results" class="hover:text-indigo-400 transition-colors">Past Projects</a>
+                <a href="/docs" class="hover:text-indigo-400 transition-colors">Documentation</a>
+            </nav>
+        </header>
+
+        <main class="grid lg:grid-cols-12 gap-12 items-start">
+            <div class="lg:col-span-5 space-y-6">
+                <h2 class="text-5xl font-extrabold leading-tight gradient-text">
+                    Harmonize Styles with AI Precision.
+                </h2>
+                <p class="text-lg text-slate-400 leading-relaxed">
+                    Transform your raw footage into cinematic masterpieces by matching color science and atmosphere from any reference image. 
+                </p>
+                
+                <div class="pt-8 grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="text-indigo-400 font-bold text-xl mb-1">U²-Net</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Semantic Detection</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="text-purple-400 font-bold text-xl mb-1">Batch</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Parallel Processing</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7">
+                <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form" class="space-y-6">
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="glass-panel rounded-[2rem] p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-6 h-6 step-number rounded-full flex items-center justify-center text-[10px] font-bold text-white">01</span>
+                                <h3 class="font-bold text-white uppercase tracking-widest text-xs">Content Sources</h3>
+                            </div>
+                            <label class="group block cursor-pointer">
+                                <div class="border-2 border-dashed border-slate-700 rounded-2xl h-40 flex flex-col items-center justify-center group-hover:border-indigo-500 transition-colors">
+                                    <svg class="w-8 h-8 text-slate-500 mb-2 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <span class="text-sm font-medium text-slate-400 group-hover:text-slate-200">Upload Media</span>
+                                </div>
+                                <input type="file" name="sources" class="hidden" multiple required />
+                            </label>
+                        </div>
+
+                        <div class="glass-panel rounded-[2rem] p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-6 h-6 step-number rounded-full flex items-center justify-center text-[10px] font-bold text-white">02</span>
+                                <h3 class="font-bold text-white uppercase tracking-widest text-xs">Aesthetic Reference</h3>
+                            </div>
+                            <label class="group block cursor-pointer">
+                                <div class="border-2 border-dashed border-slate-700 rounded-2xl h-40 flex flex-col items-center justify-center group-hover:border-purple-500 transition-colors">
+                                    <svg class="w-8 h-8 text-slate-500 mb-2 group-hover:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <span class="text-sm font-medium text-slate-400 group-hover:text-slate-200">Select Style</span>
+                                </div>
+                                <input type="file" name="target" class="hidden" required />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-[2rem] p-6 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Smart Subject Protection</h4>
+                                <p class="text-xs text-slate-500">AI-powered mask preservation for people and skin tones.</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="smart_mode" value="true" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-slate-800 rounded-full peer peer-checked:bg-indigo-600 after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                        </label>
+                    </div>
+                    
+
+                    <button type="submit" class="w-full py-5 rounded-2xl bg-white text-black font-black text-lg hover:bg-indigo-500 hover:text-white transition-all transform active:scale-[0.98] shadow-2xl shadow-indigo-500/20">
+                        GENERATE BATCH
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="loader" class="fixed inset-0 bg-[#0a0b0e]/95 z-50 hidden flex-col items-center justify-center backdrop-blur-xl">
+        <div class="w-20 h-20 relative">
+            <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <h2 class="mt-8 text-2xl font-bold text-white tracking-tighter">ENGINEERING HARMONY</h2>
+        <p class="text-slate-500 text-sm mt-2 animate-pulse uppercase tracking-widest font-bold">Processing Neural Layers...</p>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('loader').classList.add('flex');
+        });
+    </script>
+</body>
+</html>  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Harmonizer Pro | AI Stylization Studio</title>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0b0e; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom scrollbar for preview area */
+        .preview-scroll::-webkit-scrollbar { height: 4px; }
+        .preview-scroll::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 10px; }
+    </style>
+</head>
+<body class="text-slate-300 min-h-screen selection:bg-indigo-500/30">
+
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <header class="flex justify-between items-center mb-16">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 step-number rounded-xl flex items-center justify-center">
+                    <span class="text-white font-black text-xl">H</span>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tighter text-white uppercase">Harmonizer<span class="text-indigo-400">Pro</span></h1>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-slate-500">
+                <a href="/results" class="hover:text-indigo-400 transition-colors">Past Projects</a>
+                <a href="/docs" class="hover:text-indigo-400 transition-colors">Documentation</a>
+            </nav>
+        </header>
+
+        <main class="grid lg:grid-cols-12 gap-12 items-start">
+            <div class="lg:col-span-5 space-y-6">
+                <h2 class="text-5xl font-extrabold leading-tight gradient-text">Harmonize Styles with AI Precision.</h2>
+                <p class="text-lg text-slate-400 leading-relaxed">Transform raw footage into cinematic masterpieces by matching color science from any reference image.</p>
+                
+                <div class="pt-8 grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="text-indigo-400 font-bold text-xl mb-1 text-[10px] uppercase tracking-widest">Logic</div>
+                        <div class="text-xs text-slate-300 font-semibold">U²-Net Segmentation</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="text-purple-400 font-bold text-xl mb-1 text-[10px] uppercase tracking-widest">Engine</div>
+                        <div class="text-xs text-slate-300 font-semibold">Histogram Matching</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7">
+                <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form" class="space-y-6">
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="glass-panel rounded-[2rem] p-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-6 h-6 step-number rounded-full flex items-center justify-center text-[10px] font-bold text-white">01</span>
+                                    <h3 class="font-bold text-white uppercase tracking-widest text-xs">Content</h3>
+                                </div>
+                                <span id="source-count" class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">0 Files</span>
+                            </div>
+                            <label class="group block cursor-pointer">
+                                <div id="source-drop-zone" class="border-2 border-dashed border-slate-700 rounded-2xl h-40 flex flex-col items-center justify-center group-hover:border-indigo-500 transition-colors overflow-hidden">
+                                    <div id="source-placeholder" class="flex flex-col items-center">
+                                        <svg class="w-8 h-8 text-slate-500 mb-2 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        <span class="text-sm font-medium text-slate-400">Upload Media</span>
+                                    </div>
+                                    <div id="source-preview" class="hidden w-full h-full p-2 grid grid-cols-3 gap-2 overflow-y-auto preview-scroll"></div>
+                                </div>
+                                <input type="file" name="sources" class="hidden" multiple required />
+                            </label>
+                        </div>
+
+                        <div class="glass-panel rounded-[2rem] p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-6 h-6 step-number rounded-full flex items-center justify-center text-[10px] font-bold text-white">02</span>
+                                <h3 class="font-bold text-white uppercase tracking-widest text-xs">Atmosphere</h3>
+                            </div>
+                            <label class="group block cursor-pointer">
+                                <div id="target-drop-zone" class="border-2 border-dashed border-slate-700 rounded-2xl h-40 flex flex-col items-center justify-center group-hover:border-purple-500 transition-colors overflow-hidden">
+                                    <div id="target-placeholder" class="flex flex-col items-center">
+                                        <svg class="w-8 h-8 text-slate-500 mb-2 group-hover:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        <span class="text-sm font-medium text-slate-400">Select Style</span>
+                                    </div>
+                                    <img id="target-preview" class="hidden w-full h-full object-cover rounded-xl" />
+                                </div>
+                                <input type="file" name="target" class="hidden" required />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-[2rem] p-6 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Semantic Subject Protection</h4>
+                                <p class="text-xs text-slate-500">AI preserves skin tones and people from filter distortion.</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="smart_mode" value="true" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-slate-800 rounded-full peer peer-checked:bg-indigo-600 after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                        </label>
+                    </div>
+
+                    <div class="glass-panel rounded-[2rem] p-6 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Ultra HD Upscaling (4x)</h4>
+                                <p class="text-xs text-slate-500">Reconstructs lost details for high-resolution output.</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="hd_mode" value="true" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-800 rounded-full peer peer-checked:bg-purple-600 after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full py-5 rounded-2xl bg-white text-black font-black text-lg hover:bg-indigo-500 hover:text-white transition-all transform active:scale-[0.98]">GENERATE HARMONY</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="loader" class="fixed inset-0 bg-[#0a0b0e]/95 z-50 hidden flex-col items-center justify-center backdrop-blur-xl">
+        <div class="w-20 h-20 relative mb-8">
+            <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <h2 id="loader-title" class="text-2xl font-bold text-white tracking-tighter uppercase">Transferring Data</h2>
+        <div class="w-64 bg-slate-800 rounded-full h-1.5 mt-6 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <p id="progress-text" class="text-slate-500 text-[10px] mt-3 uppercase tracking-widest font-black">0% Uploaded</p>
+    </div>
+
+    <script>
+        // Live Preview for Sources
+        const sourceInput = document.querySelector('input[name="sources"]');
+        const sourcePreview = document.getElementById('source-preview');
+        const sourcePlaceholder = document.getElementById('source-placeholder');
+        const sourceCountLabel = document.getElementById('source-count');
+
+        sourceInput.addEventListener('change', function() {
+            sourcePreview.innerHTML = '';
+            if (this.files.length > 0) {
+                sourcePlaceholder.classList.add('hidden');
+                sourcePreview.classList.remove('hidden');
+                sourceCountLabel.innerText = `${this.files.length} Files Selected`;
+                
+                Array.from(this.files).slice(0, 6).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = "w-full h-16 object-cover rounded-lg border border-white/5";
+                        sourcePreview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+
+        // Live Preview for Target Style
+        const targetInput = document.querySelector('input[name="target"]');
+        const targetPreview = document.getElementById('target-preview');
+        const targetPlaceholder = document.getElementById('target-placeholder');
+
+        targetInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    targetPlaceholder.classList.add('hidden');
+                    targetPreview.src = e.target.result;
+                    targetPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // AJAX Upload with Progress Bar
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const xhr = new XMLHttpRequest();
+            
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('loader').classList.add('flex');
+
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const percent = Math.round((event.loaded / event.total) * 100);
+                    document.getElementById('progress-bar').style.width = percent + '%';
+                    document.getElementById('progress-text').innerText = percent + '% Uploaded';
+                    if(percent === 100) {
+                        document.getElementById('loader-title').innerText = "Processing Neural Layers";
+                        document.getElementById('progress-text').innerText = "AI is harmonizing your images...";
+                    }
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    window.location.href = "/results";
+                } else {
+                    alert("Error processing images. Please check the console.");
+                    document.getElementById('loader').classList.add('hidden');
+                }
+            };
+
+            xhr.open('POST', '/upload', true);
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>

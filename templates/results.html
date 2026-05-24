@@ -1,0 +1,330 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Harmonizer Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for Slider */
+        .slider-container { position: relative; width: 100%; height: 300px; overflow: hidden; cursor: ew-resize; }
+        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .slider-handle {
+            position: absolute; top: 0; bottom: 0; width: 4px; background: white;
+            z-index: 10; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-800">🎨 Your Results</h1>
+            <a href="/" class="px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition">
+                ← Upload More
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for res in results %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+                
+                <div class="relative h-64 bg-gray-200 cursor-pointer" 
+                     onclick="openModal('{{ url_for('static', filename='uploads/' + res.source_path) }}', 
+                                      '{{ url_for('static', filename='uploads/' + res.output_path) }}')">
+                    
+                    <img src="{{ url_for('static', filename='uploads/' + res.output_path) }}" 
+                         class="w-full h-full object-cover" alt="Result">
+                    
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="text-white font-semibold border border-white px-4 py-2 rounded-full backdrop-blur-sm">
+                            Click to Compare
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-gray-100">
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wide">Theme Applied</p>
+                    <p class="text-sm text-gray-800 truncate">{{ res.target_path }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="sliderModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl font-bold z-50 hover:text-gray-300">&times;</button>
+            
+            <div id="comparison-slider" class="slider-container rounded-lg h-[60vh]">
+                <img id="before-img" class="img-layer" src="">
+                <img id="after-img" class="img-layer" src="" style="clip-path: inset(0 0 0 50%);">
+                <div id="slider-handle" class="slider-handle" style="left: 50%;"></div>
+            </div>
+            <p class="text-center text-white mt-4 text-sm">Move mouse to compare Before / After</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(src, out) {
+            document.getElementById('sliderModal').classList.remove('hidden');
+            document.getElementById('before-img').src = src;
+            document.getElementById('after-img').src = out;
+            
+            const slider = document.getElementById('comparison-slider');
+            const afterImg = document.getElementById('after-img');
+            const handle = document.getElementById('slider-handle');
+
+            slider.onmousemove = function(e) {
+                let rect = slider.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let percentage = (x / rect.width) * 100;
+                
+                // Clamp between 0 and 100
+                percentage = Math.max(0, Math.min(100, percentage));
+                
+                afterImg.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('sliderModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Harmonizer Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for Slider */
+        .slider-container { position: relative; width: 100%; height: 300px; overflow: hidden; cursor: ew-resize; }
+        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .slider-handle {
+            position: absolute; top: 0; bottom: 0; width: 4px; background: white;
+            z-index: 10; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-800">🎨 Your Results</h1>
+            <a href="/" class="px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition">
+                ← Upload More
+            </a>
+        </div>
+
+        {% for project in projects %}
+        <div class="mb-12">
+            <div class="flex justify-between items-end border-b border-gray-200 pb-2 mb-6">
+                <h2 class="text-xl font-bold text-indigo-700 uppercase tracking-wide">{{ project.name }}</h2>
+                <span class="text-sm font-medium text-gray-500">{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for res in project.results %}
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+                    
+                    <div class="relative h-64 bg-gray-200 cursor-pointer" 
+                         onclick="openModal('{{ url_for('static', filename='uploads/' + res.source_path) }}', 
+                                          '{{ url_for('static', filename='uploads/' + res.output_path) }}')">
+                        
+                        <img src="{{ url_for('static', filename='uploads/' + res.output_path) }}" 
+                             class="w-full h-full object-cover" alt="Result">
+                        
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span class="text-white font-semibold border border-white px-4 py-2 rounded-full backdrop-blur-sm">
+                                Click to Compare
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-t border-gray-100">
+                        <p class="text-xs text-gray-500 uppercase font-bold tracking-wide">Theme Applied</p>
+                        <p class="text-sm text-gray-800 truncate">{{ res.target_path }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-500 text-lg">No processed batches found.</p>
+            <p class="text-gray-400 text-sm mt-2">Upload some images to see your results here.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div id="sliderModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl font-bold z-50 hover:text-gray-300">&times;</button>
+            
+            <div id="comparison-slider" class="slider-container rounded-lg h-[60vh]">
+                <img id="before-img" class="img-layer" src="">
+                <img id="after-img" class="img-layer" src="" style="clip-path: inset(0 0 0 50%);">
+                <div id="slider-handle" class="slider-handle" style="left: 50%;"></div>
+            </div>
+            <p class="text-center text-white mt-4 text-sm font-medium tracking-wide pb-4">Slide to compare Original vs. HD Harmonized</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(src, out) {
+            document.getElementById('sliderModal').classList.remove('hidden');
+            document.getElementById('before-img').src = src;
+            document.getElementById('after-img').src = out;
+            
+            const slider = document.getElementById('comparison-slider');
+            const afterImg = document.getElementById('after-img');
+            const handle = document.getElementById('slider-handle');
+
+            slider.onmousemove = function(e) {
+                let rect = slider.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let percentage = (x / rect.width) * 100;
+                
+                percentage = Math.max(0, Math.min(100, percentage));
+                
+                afterImg.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('sliderModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Harmonizer Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for Slider */
+        .slider-container { position: relative; width: 100%; height: 300px; overflow: hidden; cursor: ew-resize; }
+        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .slider-handle {
+            position: absolute; top: 0; bottom: 0; width: 4px; background: white;
+            z-index: 10; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-800">🎨 Your Results</h1>
+            <a href="/" class="px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition">
+                ← Upload More
+            </a>
+        </div>
+
+        {% for project in projects %}
+        <div class="mb-12">
+            <div class="flex justify-between items-end border-b border-gray-200 pb-2 mb-6">
+                <h2 class="text-xl font-bold text-indigo-700 uppercase tracking-wide">{{ project.name }}</h2>
+                <span class="text-sm font-medium text-gray-500">{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for res in project.results %}
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group relative">
+                    
+                    <div class="relative h-64 bg-gray-200 cursor-pointer" 
+                         onclick="openModal('{{ url_for('static', filename='uploads/' + res.source_path) }}', 
+                                          '{{ url_for('static', filename='uploads/' + res.output_path) }}')">
+                        
+                        <img src="{{ url_for('static', filename='uploads/' + res.output_path) }}" 
+                             class="w-full h-full object-cover" alt="Result">
+                        
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span class="text-white text-sm font-semibold border border-white px-4 py-2 rounded-full backdrop-blur-sm">
+                                Click to Compare
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-t border-gray-100 flex items-center justify-between">
+                        <div class="truncate pr-4">
+                            <p class="text-xs text-gray-500 uppercase font-bold tracking-wide">Theme Applied</p>
+                            <p class="text-sm text-gray-800 truncate">{{ res.target_path }}</p>
+                        </div>
+                        
+                        <a href="{{ url_for('static', filename='uploads/' + res.output_path) }}" 
+                           download="harmonized_hd_{{ res.output_path }}"
+                           class="flex items-center justify-center p-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl transition shadow-sm border border-indigo-100 group/btn"
+                           title="Download HD Image">
+                            <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-500 text-lg">No processed batches found.</p>
+            <p class="text-gray-400 text-sm mt-2">Upload some images to see your results here.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div id="sliderModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl font-bold z-50 hover:text-gray-300">&times;</button>
+            
+            <div id="comparison-slider" class="slider-container rounded-lg h-[60vh]">
+                <img id="before-img" class="img-layer" src="">
+                <img id="after-img" class="img-layer" src="" style="clip-path: inset(0 0 0 50%);">
+                <div id="slider-handle" class="slider-handle" style="left: 50%;"></div>
+            </div>
+            <p class="text-center text-white mt-4 text-sm font-medium tracking-wide pb-4">Slide to compare Original vs. HD Harmonized</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(src, out) {
+            document.getElementById('sliderModal').classList.remove('hidden');
+            document.getElementById('before-img').src = src;
+            document.getElementById('after-img').src = out;
+            
+            const slider = document.getElementById('comparison-slider');
+            const afterImg = document.getElementById('after-img');
+            const handle = document.getElementById('slider-handle');
+
+            slider.onmousemove = function(e) {
+                let rect = slider.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let percentage = (x / rect.width) * 100;
+                
+                percentage = Math.max(0, Math.min(100, percentage));
+                
+                afterImg.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+                handle.style.left = `${percentage}%`;
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('sliderModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
