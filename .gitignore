@@ -1,0 +1,16 @@
+# Python Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Database and Uploads
+instance/
+static/uploads/*
+!static/uploads/.gitkeep
+
+# AI Models (Too large for GitHub)
+models/*.pb
+
+# OS generated files
+.DS_Store
+Thumbs.db

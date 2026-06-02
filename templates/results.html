@@ -217,7 +217,7 @@
     <style>
         /* Custom Styles for Slider */
         .slider-container { position: relative; width: 100%; height: 300px; overflow: hidden; cursor: ew-resize; }
-        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background-color: #000; }
         .slider-handle {
             position: absolute; top: 0; bottom: 0; width: 4px; background: white;
             z-index: 10; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none;
@@ -250,7 +250,7 @@
                                           '{{ url_for('static', filename='uploads/' + res.output_path) }}')">
                         
                         <img src="{{ url_for('static', filename='uploads/' + res.output_path) }}" 
-                             class="w-full h-full object-cover" alt="Result">
+                             class="w-full h-full object-contain p-2" alt="Result">
                         
                         <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <span class="text-white text-sm font-semibold border border-white px-4 py-2 rounded-full backdrop-blur-sm">
